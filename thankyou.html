@@ -1,56 +1,3 @@
-<?php
-include_once 'config.php';
-
-if (isset($_POST["phone"])) {
-    $curl = curl_init();
-    $post = [
-        "first_name" => $_POST["first_name"],
-        "last_name" => $_POST["last_name"],
-        "email" => $_POST["email"],
-        "phone" => $_POST["phone"],
-        "ip" => $_POST["ip"],
-        "additional_info" => $_POST["additional_info"],
-        "land_id" => $land_id,
-        "affiliate" => $affiliate,
-        "source_url" => $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'],
-        "sub_1" => $_GET["sub_1"],
-        "sub_2" => $_GET["sub_2"],
-        "sub_3" => $_GET["sub_3"],
-        "sub_4" => $_GET["sub_4"],
-        "sub_5" => $_GET["sub_5"],
-        "test" => $_GET["test"]
-    ];
-
-    curl_setopt_array($curl, [
-        CURLOPT_URL => "https://api.elain.network/api/v1/create",
-        CURLOPT_RETURNTRANSFER => true,
-        CURLOPT_ENCODING => "",
-        CURLOPT_MAXREDIRS => 10,
-        CURLOPT_TIMEOUT => 30,
-        CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-        CURLOPT_CUSTOMREQUEST => "POST",
-        CURLOPT_POSTFIELDS => $post,
-        CURLOPT_HTTPHEADER => [
-            "token: $token"
-        ]
-    ]);
-
-    $response = curl_exec($curl);
-    $err = curl_error($curl);
-
-    curl_close($curl);
-
-    $data = json_decode($response);
-    $autologin = $data->result->redirectUrl;
-
-    if ($autologin !== '') {
-        header('refresh:3;url=' . $autologin);
-    } else {
-        header('refresh:3;');
-    }
-}
-?>
-
 <!DOCTYPE html>
 <html lang="it">
 <head>
@@ -117,6 +64,7 @@ if (isset($_POST["phone"])) {
     <img src="assets/img/svg/header-logo.svg" alt="logo" class="logo-img">
     <h2>Grazie per la registrazione!</h2>
     <p>Il nostro agente ti contatterà a breve.<br/> Assicurati di aver utilizzato il numero di telefono effettivo.<br/> Saluti.</p>
+    <a href="index.html" style="display:inline-block;color:#fff;margin-top:2rem;background: #000;padding:0.5rem 1rem;border-radius:5px">Back</a>
   </div>
 </body>
 </html>

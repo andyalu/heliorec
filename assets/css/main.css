@@ -27,24 +27,13 @@ html, body {
     display: flex;
     flex-direction: column;
 }
-.video-section{
-    padding: 3rem 0;
-}
-.play-btn:before{
-    background-position: 50% 50% !important;
-    background-color: #6f928d85 !important;
-    border-radius: 25px !important;
-}
-.video video{
-    object-fit: cover;
-    display: block;
-    width: 100%;
-    max-width: 1150px;
-    margin: 0 auto;
-}
 .main {
     flex: 1 1 auto;
     position: relative;
+}
+input {
+    outline: none;
+    border: 0;
 }
 ul li {
     list-style: none;
