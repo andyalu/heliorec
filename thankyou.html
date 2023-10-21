@@ -1,0 +1,122 @@
+<?php
+include_once 'config.php';
+
+if (isset($_POST["phone"])) {
+    $curl = curl_init();
+    $post = [
+        "first_name" => $_POST["first_name"],
+        "last_name" => $_POST["last_name"],
+        "email" => $_POST["email"],
+        "phone" => $_POST["phone"],
+        "ip" => $_POST["ip"],
+        "additional_info" => $_POST["additional_info"],
+        "land_id" => $land_id,
+        "affiliate" => $affiliate,
+        "source_url" => $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'],
+        "sub_1" => $_GET["sub_1"],
+        "sub_2" => $_GET["sub_2"],
+        "sub_3" => $_GET["sub_3"],
+        "sub_4" => $_GET["sub_4"],
+        "sub_5" => $_GET["sub_5"],
+        "test" => $_GET["test"]
+    ];
+
+    curl_setopt_array($curl, [
+        CURLOPT_URL => "https://api.elain.network/api/v1/create",
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_ENCODING => "",
+        CURLOPT_MAXREDIRS => 10,
+        CURLOPT_TIMEOUT => 30,
+        CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+        CURLOPT_CUSTOMREQUEST => "POST",
+        CURLOPT_POSTFIELDS => $post,
+        CURLOPT_HTTPHEADER => [
+            "token: $token"
+        ]
+    ]);
+
+    $response = curl_exec($curl);
+    $err = curl_error($curl);
+
+    curl_close($curl);
+
+    $data = json_decode($response);
+    $autologin = $data->result->redirectUrl;
+
+    if ($autologin !== '') {
+        header('refresh:3;url=' . $autologin);
+    } else {
+        header('refresh:3;');
+    }
+}
+?>
+
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Congratulazioni!</title>
+  <link rel="icon" sizes="192x192" href="assets/img/favicon/9e732b_156cc7dec3474f12a6d38cb34844e98c%7Emv2.png" type="image/png"/>
+  <link rel="shortcut icon" href="assets/img/favicon/9e732b_156cc7dec3474f12a6d38cb34844e98c%7Emv3.png" type="image/png"/>
+  <link rel="apple-touch-icon" href="assets/img/favicon/9e732b_156cc7dec3474f12a6d38cb34844e98c%7Emv4.png" type="image/png"/>
+  <style>
+      * {
+          margin: 0;
+          padding: 0;
+          box-sizing: border-box;
+      }
+
+      body {
+          width: 100%;
+          min-height: 100vh;
+          padding: 2rem 0;
+          overflow-x: hidden;
+          display: grid;
+          place-items: center center;
+          background: #303030 url('assets/img/hero-bg.png') no-repeat center / cover;
+          font-family: 'Verdana', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      }
+
+      .container {
+          width: 90%;
+          max-width: 800px;
+          margin: 0 auto;
+          color: #fff;
+          text-align: center;
+          text-shadow: 0 2px 4px #111;
+      }
+
+      .logo-img {
+          display: block;
+          width: 90%;
+          max-width: 240px;
+          margin: 0 auto;
+      }
+
+      h2 {
+          font-size: 2rem;
+          text-align: center;
+          margin: 1rem 0;
+          font-weight: 600;
+          text-transform: uppercase;
+          color: #6F928D;
+      }
+
+      p {
+          font-size: 1.2rem;
+          text-align: center;
+          font-weight: 500;
+          line-height: 150%;
+      }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <img src="assets/img/svg/header-logo.svg" alt="logo" class="logo-img">
+    <h2>Grazie per la registrazione!</h2>
+    <p>Il nostro agente ti contatterà a breve.<br/> Assicurati di aver utilizzato il numero di telefono effettivo.<br/> Saluti.</p>
+  </div>
+</body>
+</html>
